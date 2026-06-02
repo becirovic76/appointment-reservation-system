@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Appointment Reservation System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- Navigation -->
+  <header class="navbar" id="navbar" hidden>
+    <div class="nav-brand">
+      <span class="logo-icon">📅</span>
+      <span>Appointment Reservation</span>
+    </div>
+    <nav class="nav-links">
+      <button class="nav-link active" data-view="dashboard">Dashboard</button>
+      <button class="nav-link" data-view="services">Services</button>
+      <button class="nav-link" data-view="slots">Slots</button>
+      <button class="nav-link" data-view="reservations">My Reservations</button>
+      <button class="nav-link" data-view="profile">Profile</button>
+      <button class="nav-link admin-only" data-view="admin" hidden>Admin Panel</button>
+    </nav>
+    <div class="nav-user">
+      <span id="navUserName"></span>
+      <span class="role-badge" id="navUserRole"></span>
+      <button class="btn btn-outline btn-sm" id="btnLogout">Logout</button>
+    </div>
+  </header>
+
+  <main class="main-content">
+    <!-- Auth: Login -->
+    <section id="view-login" class="view auth-view">
+      <div class="auth-card">
+        <h1>Welcome Back</h1>
+        <p class="subtitle">Sign in to manage your appointments</p>
+        <form id="loginForm">
+          <div class="form-group">
+            <label for="loginEmail">Email</label>
+            <input type="email" id="loginEmail" required placeholder="you@university.edu" />
+          </div>
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <input type="password" id="loginPassword" required placeholder="••••••••" />
+          </div>
+          <div id="loginError" class="alert alert-error" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        </form>
+        <p class="auth-switch">Don't have an account? <a href="#" id="showRegister">Register</a></p>
+        <div class="demo-credentials">
+          <p><strong>Demo:</strong> admin@university.edu / admin123</p>
+          <p>john@university.edu / user123</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Auth: Register -->
+    <section id="view-register" class="view auth-view" hidden>
+      <div class="auth-card">
+        <h1>Create Account</h1>
+        <p class="subtitle">Register to book appointments</p>
+        <form id="registerForm">
+          <div class="form-group">
+            <label for="regFullName">Full Name</label>
+            <input type="text" id="regFullName" required placeholder="John Doe" />
+          </div>
+          <div class="form-group">
+            <label for="regEmail">Email</label>
+            <input type="email" id="regEmail" required placeholder="you@university.edu" />
+          </div>
+          <div class="form-group">
+            <label for="regPassword">Password</label>
+            <input type="password" id="regPassword" required minlength="6" placeholder="Min. 6 characters" />
+          </div>
+          <div id="registerError" class="alert alert-error" hidden></div>
+          <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+        <p class="auth-switch">Already have an account? <a href="#" id="showLogin">Sign In</a></p>
+      </div>
+    </section>
+
+    <!-- Dashboard -->
+    <section id="view-dashboard" class="view" hidden>
+      <div class="page-header">
+        <h1>Dashboard</h1>
+        <p id="dashboardGreeting"></p>
+      </div>
+      <div class="stats-grid" id="dashboardStats"></div>
+      <div class="card">
+        <h2>Quick Actions</h2>
+        <div class="quick-actions">
+          <button class="btn btn-primary" data-goto="slots">Book Appointment</button>
+          <button class="btn btn-secondary" data-goto="reservations">View History</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section id="view-services" class="view" hidden>
+      <div class="page-header">
+        <h1>Available Services</h1>
+        <p>Browse services offered by the university</p>
+      </div>
+      <div id="servicesList" class="cards-grid"></div>
+      <div class="admin-section admin-only" hidden>
+        <div class="card">
+          <h2>Manage Services</h2>
+          <form id="serviceForm" class="inline-form">
+            <input type="text" id="svcName" placeholder="Name" required />
+            <input type="text" id="svcDesc" placeholder="Description" required />
+            <input type="number" id="svcDuration" placeholder="Duration (min)" min="15" required />
+            <button type="submit" class="btn btn-primary">Add Service</button>
+          </form>
+          <div id="adminServicesTable" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Slots -->
+    <section id="view-slots" class="view" hidden>
+      <div class="page-header">
+        <h1>Appointment Slots</h1>
+        <p>View and reserve available time slots</p>
+      </div>
+      <div class="filters">
+        <select id="filterService">
+          <option value="">All Services</option>
+        </select>
+        <button class="btn btn-secondary" id="btnRefreshSlots">Refresh</button>
+      </div>
+      <div id="slotsList" class="cards-grid"></div>
+      <div class="admin-section admin-only" hidden>
+        <div class="card">
+          <h2>Create Slot</h2>
+          <form id="slotForm" class="inline-form">
+            <input type="date" id="slotDate" required />
+            <input type="time" id="slotStart" required />
+            <input type="time" id="slotEnd" required />
+            <select id="slotServiceId" required></select>
+            <button type="submit" class="btn btn-primary">Add Slot</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservations -->
+    <section id="view-reservations" class="view" hidden>
+      <div class="page-header">
+        <h1>Reservation History</h1>
+        <p>Your past and upcoming appointments</p>
+      </div>
+      <div id="reservationsList"></div>
+      <div class="admin-section admin-only" hidden>
+        <div class="card">
+          <h2>All Reservations (Admin)</h2>
+          <div id="allReservationsTable" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="view-profile" class="view" hidden>
+      <div class="page-header">
+        <h1>My Profile</h1>
+      </div>
+      <div class="card profile-card" id="profileCard"></div>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="view-admin" class="view" hidden>
+      <div class="page-header">
+        <h1>Administrator Panel</h1>
+        <p>Manage users, services, slots, and reservations</p>
+      </div>
+      <div class="card">
+        <h2>User Management</h2>
+        <div id="usersTable" class="table-wrap"></div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
