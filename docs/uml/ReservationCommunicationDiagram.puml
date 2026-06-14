@@ -1,0 +1,22 @@
+@startuml CommunicationDiagram
+title Create Reservation - Communication Diagram (Clean)
+
+object User
+object Frontend
+object Backend
+object ReservationService
+object SlotService
+object Database
+
+User --> Frontend : 1: select slot
+Frontend --> Backend : 2: create reservation
+Backend --> ReservationService : 3: createReservation()
+ReservationService --> SlotService : 4: check slot
+SlotService --> Database : 5: query
+Database --> ReservationService : 6: result
+ReservationService --> Database : 7: insert reservation
+ReservationService --> Database : 8: update slot
+Backend --> Frontend : 9: success
+Frontend --> User : 10: confirmation
+
+@enduml

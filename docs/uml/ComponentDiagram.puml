@@ -1,0 +1,31 @@
+@startuml ComponentDiagram
+title Appointment Reservation System - Component Diagram (Clean ADS Version)
+
+skinparam componentStyle rectangle
+
+package "Frontend" {
+  [Web Application]
+}
+
+package "Backend API" {
+  [Authentication Module]
+  [Service Module]
+  [Slot Module]
+  [Reservation Module]
+  [User Module]
+}
+
+package "Data Layer" {
+  [SQLite Database]
+}
+
+' Connections
+[Web Application] --> [Backend API] : REST API calls
+[Backend API] --> [SQLite Database] : CRUD operations
+
+[Authentication Module] --> [User Module]
+[Reservation Module] --> [Slot Module]
+[Reservation Module] --> [User Module]
+[Slot Module] --> [Service Module]
+
+@enduml

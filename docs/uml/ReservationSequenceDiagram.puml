@@ -1,0 +1,28 @@
+@startuml ReservationSequenceDiagram
+title Create Appointment Reservation - Sequence Diagram (Simplified)
+
+actor User
+participant Frontend
+participant Backend
+participant ReservationService
+participant SlotService
+database Database
+
+User -> Frontend : select slot + reserve
+Frontend -> Backend : POST /reservations (slotId)
+
+Backend -> ReservationService : createReservation(userId, slotId)
+
+ReservationService -> SlotService : checkAvailability(slotId)
+SlotService -> Database : get slot
+
+Database --> SlotService : slot data
+SlotService --> ReservationService : available
+
+ReservationService -> Database : create reservation
+ReservationService -> Database : update slot availability
+
+Backend --> Frontend : success response
+Frontend --> User : confirmation message
+
+@enduml

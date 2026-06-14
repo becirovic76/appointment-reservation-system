@@ -1,0 +1,89 @@
+@startuml UseCaseDiagram
+title Appointment Reservation System - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor Guest as guest
+actor "Registered User" as user
+actor Administrator as admin
+
+rectangle "Appointment Reservation System" {
+
+  package "Authentication" {
+    usecase "Register Account" as UC_Register
+    usecase "Login" as UC_Login
+    usecase "Logout" as UC_Logout
+    usecase "View Current Session" as UC_Me
+  }
+
+  package "User Features" {
+    usecase "View Available Services" as UC_ViewServices
+    usecase "View Appointment Slots" as UC_ViewSlots
+    usecase "Create Appointment Reservation" as UC_CreateReservation
+    usecase "Cancel Reservation" as UC_CancelReservation
+    usecase "View Reservation History" as UC_ViewHistory
+    usecase "View User Profile" as UC_Profile
+  }
+
+  package "Administrator Features" {
+    usecase "Create Service" as UC_CreateService
+    usecase "Edit Service" as UC_EditService
+    usecase "Delete Service" as UC_DeleteService
+    usecase "Create Appointment Slot" as UC_CreateSlot
+    usecase "Delete Appointment Slot" as UC_DeleteSlot
+    usecase "View All Reservations" as UC_ViewAllReservations
+    usecase "Manage Users" as UC_ManageUsers
+  }
+}
+
+' Guest
+guest --> UC_Register
+guest --> UC_Login
+guest --> UC_ViewServices
+guest --> UC_ViewSlots
+
+' Registered User
+user --> UC_Login
+user --> UC_Logout
+user --> UC_Me
+user --> UC_ViewServices
+user --> UC_ViewSlots
+user --> UC_CreateReservation
+user --> UC_CancelReservation
+user --> UC_ViewHistory
+user --> UC_Profile
+
+' Administrator inherits user capabilities
+admin -|> user
+admin --> UC_CreateService
+admin --> UC_EditService
+admin --> UC_DeleteService
+admin --> UC_CreateSlot
+admin --> UC_DeleteSlot
+admin --> UC_ViewAllReservations
+admin --> UC_ManageUsers
+
+' Include / Extend relationships
+UC_CreateReservation ..> UC_Login : <<include>>
+UC_CancelReservation ..> UC_Login : <<include>>
+UC_ViewHistory ..> UC_Login : <<include>>
+UC_Profile ..> UC_Login : <<include>>
+UC_CreateService ..> UC_Login : <<include>>
+UC_EditService ..> UC_Login : <<include>>
+UC_DeleteService ..> UC_Login : <<include>>
+UC_CreateSlot ..> UC_Login : <<include>>
+UC_DeleteSlot ..> UC_Login : <<include>>
+UC_ViewAllReservations ..> UC_Login : <<include>>
+UC_ManageUsers ..> UC_Login : <<include>>
+
+note right of UC_CreateReservation
+  Business rules enforced:
+  - Slot must exist and be available
+  - Slot cannot be in the past
+  - No duplicate active reservation
+  - Slot marked unavailable on success
+end note
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml ActivityDiagram
+title Create Reservation - Activity Diagram (Clean)
+
+start
+
+:User selects appointment slot;
+:Send reservation request;
+
+if (User authenticated?) then (yes)
+  if (Slot available?) then (yes)
+    :Create reservation;
+    :Mark slot as unavailable;
+    :Return success;
+  else (no)
+    :Show "Slot not available";
+  endif
+else (no)
+  :Return login error;
+endif
+
+stop
+@enduml

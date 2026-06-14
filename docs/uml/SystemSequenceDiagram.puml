@@ -1,0 +1,59 @@
+@startuml SystemSequenceDiagram
+title Appointment Reservation System - System Sequence Diagram (Overview)
+
+actor Guest
+actor User
+actor Administrator as Admin
+
+box "Appointment Reservation System" #LightBlue
+  participant ":System" as System
+end box
+
+== Guest: Browse (no login) ==
+Guest -> System : viewServices()
+System --> Guest : serviceList
+
+Guest -> System : viewSlots(optionalFilters)
+System --> Guest : slotList
+
+== Guest / User: Authentication ==
+Guest -> System : register(fullName, email, password)
+System --> Guest : userCreated
+
+User -> System : login(email, password)
+System --> User : jwtToken + userProfile
+
+User -> System : logout()
+System --> User : logoutConfirmation
+
+== User: Reservations ==
+User -> System : createReservation(slotId)
+alt validation fails
+  System --> User : errorMessage
+else success
+  System --> User : reservationCreated
+end
+
+User -> System : cancelReservation(reservationId)
+System --> User : reservationCancelled
+
+User -> System : viewMyReservations()
+System --> User : reservationHistory
+
+User -> System : viewProfile()
+System --> User : profileData
+
+== Administrator: Management ==
+Admin -> System : manageServices(CRUD)
+System --> Admin : serviceResult
+
+Admin -> System : manageSlots(create, delete)
+System --> Admin : slotResult
+
+Admin -> System : viewAllReservations()
+System --> Admin : allReservations
+
+Admin -> System : manageUsers(list, updateRole, delete)
+System --> Admin : userManagementResult
+
+@enduml

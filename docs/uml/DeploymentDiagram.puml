@@ -1,0 +1,19 @@
+@startuml DeploymentDiagram
+title Deployment Diagram - Appointment System
+
+node "Client Device" {
+  artifact "Web Browser"
+}
+
+node "Server" {
+  artifact "Backend API (Node.js)"
+}
+
+node "Database Server" {
+  database "SQLite Database"
+}
+
+"Web Browser" --> "Backend API (Node.js)" : HTTP requests
+"Backend API (Node.js)" --> "SQLite Database" : data access
+
+@enduml

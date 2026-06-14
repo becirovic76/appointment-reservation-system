@@ -1,0 +1,42 @@
+@startuml ReservationStateDiagram
+title Reservation Entity - State Diagram
+
+skinparam state {
+  BackgroundColor LightYellow
+  BorderColor DarkSlateGray
+}
+
+[*] --> Active : createReservation()\n[valid slot & user]
+
+state Active {
+  Active : entry / slot.IsAvailable = false
+  Active : do / status = "Active"
+}
+
+Active --> Cancelled : cancelReservation()\n[user owns reservation\nOR administrator]
+
+state Cancelled {
+  Cancelled : entry / slot.IsAvailable = true
+  Cancelled : do / status = "Cancelled"
+}
+
+Cancelled --> [*]
+
+Active --> Active : <<invalid>>\ncreateReservation()\n[duplicate user+slot]
+note on link
+  Rejected by
+  findActiveByUserAndSlot()
+end note
+
+note right of Active
+  ReservationRepository.create()
+  sets ReservationDate = datetime('now')
+  Default status from DB: 'Active'
+end note
+
+note right of Cancelled
+  ReservationRepository.updateStatus(id, 'Cancelled')
+  Terminal state - no transition back to Active
+end note
+
+@enduml

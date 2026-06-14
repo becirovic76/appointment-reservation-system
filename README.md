@@ -130,6 +130,7 @@ The backend serves both the API (`/api/*`) and the frontend static files.
 | Use Cases | `docs/USE_CASES.md` |
 | User Stories & Acceptance Criteria | `docs/USER_STORIES.md` |
 | UML Diagrams (Mermaid) | `docs/UML_DIAGRAMS.md` |
+| UML Diagrams (PlantUML) | `docs/uml/*.puml` |
 | API Endpoints | `docs/API_ENDPOINTS.md` |
 
 ---

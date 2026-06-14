@@ -1,0 +1,93 @@
+@startuml ClassDiagram
+title Appointment Reservation System - Class Diagram (ADS Clean Version)
+
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+' ================= DOMAIN =================
+package "Domain" {
+
+  class User {
+    +id : Integer
+    +fullName : String
+    +email : String
+    +password : String
+    +role : Role
+  }
+
+  class Service {
+    +id : Integer
+    +name : String
+    +description : String
+    +duration : Integer
+  }
+
+  class AppointmentSlot {
+    +id : Integer
+    +date : Date
+    +startTime : Time
+    +endTime : Time
+    +isAvailable : Boolean
+  }
+
+  class Reservation {
+    +id : Integer
+    +reservationDate : DateTime
+    +status : ReservationStatus
+  }
+
+  enum Role {
+    User
+    Administrator
+  }
+
+  enum ReservationStatus {
+    Active
+    Cancelled
+  }
+}
+
+' ================= SERVICE LAYER =================
+package "Application Layer" {
+
+  class AuthService
+  class ServiceService
+  class SlotService
+  class ReservationService
+  class UserService
+}
+
+' ================= REPOSITORY LAYER =================
+package "Infrastructure Layer" {
+
+  class UserRepository
+  class ServiceRepository
+  class SlotRepository
+  class ReservationRepository
+}
+
+' ================= RELATIONS =================
+
+' Domain relations
+User "1" --> "0..*" Reservation
+Service "1" --> "0..*" AppointmentSlot
+AppointmentSlot "1" --> "0..*" Reservation
+
+Reservation --> AppointmentSlot
+Reservation --> User
+
+' Services depend on repositories
+AuthService --> UserRepository
+ServiceService --> ServiceRepository
+SlotService --> SlotRepository
+ReservationService --> ReservationRepository
+ReservationService --> SlotRepository
+UserService --> UserRepository
+
+' Services use domain
+AuthService ..> User
+ServiceService ..> Service
+SlotService ..> AppointmentSlot
+ReservationService ..> Reservation
+
+@enduml

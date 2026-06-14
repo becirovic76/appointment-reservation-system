@@ -1,0 +1,66 @@
+@startuml DomainModel
+title Appointment Reservation System - Domain Model (Conceptual)
+
+skinparam classAttributeIconSize 0
+hide methods
+hide circle
+
+class User {
+  Id : Integer
+  FullName : String
+  Email : String
+  Password : String
+  Role : UserRole
+}
+
+enum UserRole {
+  User
+  Administrator
+}
+
+class Service {
+  Id : Integer
+  Name : String
+  Description : String
+  Duration : Integer
+}
+
+class AppointmentSlot {
+  Id : Integer
+  Date : Date
+  StartTime : Time
+  EndTime : Time
+  IsAvailable : Boolean
+}
+
+class Reservation {
+  Id : Integer
+  ReservationDate : DateTime
+  Status : ReservationStatus
+}
+
+enum ReservationStatus {
+  Active
+  Cancelled
+}
+
+User "1" -- "0..*" Reservation : makes >
+Reservation "0..*" -- "1" AppointmentSlot : books >
+AppointmentSlot "0..*" -- "1" Service : belongs to >
+User .. UserRole
+Reservation .. ReservationStatus
+
+note bottom of AppointmentSlot
+  A slot represents a bookable
+  time window for one service.
+  IsAvailable=false when an
+  active reservation exists.
+end note
+
+note bottom of Reservation
+  Links one user to one slot.
+  Status transitions:
+  Active -> Cancelled
+end note
+
+@enduml
