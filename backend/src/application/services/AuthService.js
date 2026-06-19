@@ -1,7 +1,4 @@
-/**
- * Authentication application service.
- * Handles registration, login, password hashing, and JWT token generation.
- */
+
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../../domain/entities/User');
@@ -16,7 +13,7 @@ class AuthService {
     this.jwtExpiresIn = process.env.JWT_EXPIRES_IN || '24h';
   }
 
-  /** Registers a new user with hashed password */
+  
   async register({ fullName, email, password, role }) {
     const existing = this.userRepository.findByEmail(email);
     if (existing) {
@@ -35,7 +32,7 @@ class AuthService {
     return this._toPublicUser(created);
   }
 
-  /** Authenticates user and returns JWT token */
+  
   async login({ email, password }) {
     const user = this.userRepository.findByEmail(email);
     if (!user) {
@@ -51,7 +48,7 @@ class AuthService {
     return { token, user: this._toPublicUser(user) };
   }
 
-  /** Verifies JWT and returns payload */
+  
   verifyToken(token) {
     return jwt.verify(token, this.jwtSecret);
   }

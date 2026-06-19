@@ -1,7 +1,4 @@
-/**
- * Reservation application service.
- * Enforces business validation rules for appointments.
- */
+
 const Reservation = require('../../domain/entities/Reservation');
 const AppointmentSlot = require('../../domain/entities/AppointmentSlot');
 const ReservationStatus = require('../../domain/enums/ReservationStatus');
@@ -12,19 +9,19 @@ class ReservationService {
     this.slotRepository = slotRepository;
   }
 
-  /** Creates a reservation with validation rules */
+  
   createReservation(userId, slotId) {
     const slot = this.slotRepository.findById(slotId);
     if (!slot) {
       throw new Error('Appointment slot not found');
     }
 
-    // Validation: past dates cannot be reserved
+
     if (AppointmentSlot.isPastSlot(slot)) {
       throw new Error('Cannot reserve slots in the past');
     }
 
-    // Validation: users cannot reserve occupied slots
+
     if (!slot.isAvailable) {
       throw new Error('This slot is no longer available');
     }
@@ -34,7 +31,7 @@ class ReservationService {
       throw new Error('This slot is already reserved');
     }
 
-    // Validation: users cannot reserve the same slot twice
+
     const duplicate = this.reservationRepository.findActiveByUserAndSlot(userId, slotId);
     if (duplicate) {
       throw new Error('You already have a reservation for this slot');
@@ -51,7 +48,7 @@ class ReservationService {
     return created;
   }
 
-  /** Cancels an active reservation */
+  
   cancelReservation(reservationId, userId, isAdmin) {
     const reservation = this.reservationRepository.findById(reservationId);
     if (!reservation) {

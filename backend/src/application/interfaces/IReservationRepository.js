@@ -1,4 +1,4 @@
-/** Reservation repository contract */
+
 class IReservationRepository {
   findById() { throw new Error('Not implemented'); }
   findByUserId() { throw new Error('Not implemented'); }

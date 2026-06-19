@@ -1,4 +1,4 @@
-/** Global error handler middleware */
+
 function errorHandler(err, req, res, next) {
   console.error(err);
   const status = err.status || 400;

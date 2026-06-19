@@ -1,6 +1,4 @@
-/**
- * SQLite implementation of IUserRepository.
- */
+
 const { getDatabase } = require('../database/connection');
 const User = require('../../domain/entities/User');
 
@@ -9,7 +7,7 @@ class UserRepository {
     this.db = getDatabase();
   }
 
-  /** Maps DB row to User entity */
+  
   _mapRow(row) {
     if (!row) return null;
     return new User({

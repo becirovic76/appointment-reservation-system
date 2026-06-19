@@ -1,7 +1,4 @@
-/**
- * Database seed script.
- * Creates demo admin, user, services, slots, and sample reservation.
- */
+
 require('dotenv').config({ path: require('path').join(__dirname, '../../../.env') });
 const bcrypt = require('bcryptjs');
 const { getDatabase } = require('./connection');
@@ -14,7 +11,7 @@ async function seed() {
   const adminHash = await bcrypt.hash('admin123', 10);
   const userHash = await bcrypt.hash('user123', 10);
 
-  // Clear existing data (development only)
+
   db.exec(`
     DELETE FROM Reservations;
     DELETE FROM AppointmentSlots;
@@ -22,7 +19,7 @@ async function seed() {
     DELETE FROM Users;
   `);
 
-  // Users
+
   db.prepare(
     `INSERT INTO Users (FullName, Email, Password, Role) VALUES (?, ?, ?, ?)`
   ).run('System Administrator', 'admin@university.edu', adminHash, 'Administrator');
@@ -35,7 +32,7 @@ async function seed() {
     `INSERT INTO Users (FullName, Email, Password, Role) VALUES (?, ?, ?, ?)`
   ).run('Jane Doe', 'jane@university.edu', userHash, 'User');
 
-  // Services
+
   const services = [
     ['Academic Advising', 'One-on-one session with academic advisor', 30],
     ['Career Counseling', 'Career path and internship guidance', 45],
@@ -48,7 +45,7 @@ async function seed() {
   );
   services.forEach((s) => insertService.run(...s));
 
-  // Appointment slots (future dates)
+
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   const dayAfter = new Date();

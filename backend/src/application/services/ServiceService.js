@@ -1,6 +1,6 @@
 const Service = require('../../domain/entities/Service');
 
-/** Application service for managing bookable services */
+
 class ServiceService {
   constructor(serviceRepository) {
     this.serviceRepository = serviceRepository;

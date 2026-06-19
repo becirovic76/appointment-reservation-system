@@ -18,7 +18,7 @@ class ReservationRepository {
     });
   }
 
-  /** Returns reservation with joined details for display */
+  
   _mapDetailed(row) {
     const reservation = this._mapRow(row);
     if (!reservation) return null;

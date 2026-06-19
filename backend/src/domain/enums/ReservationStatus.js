@@ -1,4 +1,4 @@
-/** Reservation lifecycle statuses */
+
 const ReservationStatus = {
   ACTIVE: 'Active',
   CANCELLED: 'Cancelled',

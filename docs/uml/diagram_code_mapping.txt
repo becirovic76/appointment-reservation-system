@@ -1,0 +1,138 @@
+Sequence & Collaboration Diagram Code Mapping
+
+1. Frontend user action: select slot and reserve
+File: frontend/js/app.js
+Lines: 266-271
+Code:
+  window.bookSlot = async (slotId) => {
+    try {
+      await API.createReservation(slotId);
+      showToast('Reservation created!');
+      loadSlots();
+      loadReservations();
+    } catch (err) {
+      showToast(err.message, 'error');
+    }
+  };
+
+2. Frontend API request: POST /reservations
+File: frontend/js/api.js
+Line: 63
+Code:
+  createReservation: (slotId) => API.request('/reservations', { method: 'POST', body: { slotId } }),
+
+3. Backend route: receive POST /reservations
+File: backend/src/api/routes/index.js
+Lines: 39-40
+Code:
+  router.post('/reservations', auth.authenticate, reservationRules, handleValidation, controllers.reservation.create);
+
+4. Backend controller: call ReservationService
+File: backend/src/api/controllers/ReservationController.js
+Lines: 8-14
+Code:
+  create = (req, res, next) => {
+    try {
+      const reservation = this.reservationService.createReservation(
+        req.user.id,
+        Number(req.body.slotId)
+      );
+      res.status(201).json({ success: true, data: reservation });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+5. ReservationService: load slot and validate availability
+File: backend/src/application/services/ReservationService.js
+Lines: 13-28
+Code:
+  createReservation(userId, slotId) {
+    const slot = this.slotRepository.findById(slotId);
+    if (!slot) {
+      throw new Error('Appointment slot not found');
+    }
+
+    if (AppointmentSlot.isPastSlot(slot)) {
+      throw new Error('Cannot reserve slots in the past');
+    }
+
+    if (!slot.isAvailable) {
+      throw new Error('This slot is no longer available');
+    }
+
+6. ReservationService: check existing reservation state
+File: backend/src/application/services/ReservationService.js
+Lines: 29-39
+Code:
+    const existingOnSlot = this.reservationRepository.findActiveBySlotId(slotId);
+    if (existingOnSlot) {
+      throw new Error('This slot is already reserved');
+    }
+
+    const duplicate = this.reservationRepository.findActiveByUserAndSlot(userId, slotId);
+    if (duplicate) {
+      throw new Error('You already have a reservation for this slot');
+    }
+
+7. ReservationService: create reservation and update slot availability
+File: backend/src/application/services/ReservationService.js
+Lines: 40-50
+Code:
+    const reservation = new Reservation({
+      userId,
+      slotId,
+      status: ReservationStatus.ACTIVE,
+    });
+
+    const created = this.reservationRepository.create(reservation);
+    this.slotRepository.setAvailability(slotId, false);
+    return created;
+
+8. SlotRepository: query slot by ID
+File: backend/src/infrastructure/repositories/SlotRepository.js
+Lines: 21-25
+Code:
+  findById(id) {
+    return this._mapRow(this.db.prepare('SELECT * FROM AppointmentSlots WHERE Id = ?').get(id));
+  }
+
+9. SlotRepository: update slot availability
+File: backend/src/infrastructure/repositories/SlotRepository.js
+Lines: 74-79
+Code:
+  setAvailability(id, isAvailable) {
+    this.db
+      .prepare('UPDATE AppointmentSlots SET IsAvailable = ? WHERE Id = ?')
+      .run(isAvailable ? 1 : 0, id);
+    return this.findById(id);
+  }
+
+10. ReservationRepository: query existing active reservations and insert new one
+File: backend/src/infrastructure/repositories/ReservationRepository.js
+Lines: 85-93
+Code:
+  findActiveBySlotId(slotId) {
+    const row = this.db
+      .prepare("SELECT * FROM Reservations WHERE SlotId = ? AND Status = 'Active'")
+      .get(slotId);
+    return this._mapRow(row);
+  }
+
+  findActiveByUserAndSlot(userId, slotId) {
+    const row = this.db
+      .prepare(
+        "SELECT * FROM Reservations WHERE UserId = ? AND SlotId = ? AND Status = 'Active'"
+      )
+      .get(userId, slotId);
+    return this._mapRow(row);
+  }
+
+  create(reservation) {
+    const result = this.db
+      .prepare(
+        'INSERT INTO Reservations (UserId, SlotId, ReservationDate, Status) VALUES (?, ?, datetime(\'now\'), ?)'
+      )
+      .run(reservation.userId, reservation.slotId, reservation.status);
+    return this.findById(result.lastInsertRowid);
+  }

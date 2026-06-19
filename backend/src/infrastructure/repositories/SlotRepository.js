@@ -45,7 +45,7 @@ class SlotRepository {
 
     sql += ' ORDER BY s.Date, s.StartTime';
     const rows = this.db.prepare(sql).all(...params);
-    // Keep AppointmentSlot instances (spread would strip isPast() and other methods)
+
     return rows.map((r) => {
       const slot = this._mapRow(r);
       slot.serviceName = r.ServiceName;

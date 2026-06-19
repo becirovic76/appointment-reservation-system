@@ -1,11 +1,8 @@
-/**
- * Main application controller.
- * Handles routing, UI rendering, and user interactions.
- */
+
 (function () {
   const views = ['login', 'register', 'dashboard', 'services', 'slots', 'reservations', 'profile', 'admin'];
 
-  // --- Utilities ---
+
   function showToast(message, type = 'success') {
     const toast = document.getElementById('toast');
     toast.textContent = message;
@@ -15,10 +12,19 @@
   }
 
   function showView(name) {
+    const authViews = ['login', 'register'];
+    const isAuthScreen = authViews.includes(name);
+
     views.forEach((v) => {
       const el = document.getElementById(`view-${v}`);
-      if (el) el.hidden = v !== name;
+      if (!el) return;
+      if (authViews.includes(v)) {
+        el.hidden = isAuthScreen ? v !== name : true;
+      } else {
+        el.hidden = v !== name;
+      }
     });
+
     document.querySelectorAll('.nav-link').forEach((btn) => {
       btn.classList.toggle('active', btn.dataset.view === name);
     });
@@ -42,7 +48,7 @@
     }
   }
 
-  // --- Auth handlers ---
+
   document.getElementById('showRegister')?.addEventListener('click', (e) => {
     e.preventDefault();
     showView('register');
@@ -99,14 +105,14 @@
   });
 
   document.getElementById('btnLogout')?.addEventListener('click', async () => {
-    try { await API.logout(); } catch { /* ignore */ }
+    try { await API.logout(); } catch {  }
     Auth.clear();
     updateNav();
     showView('login');
     showToast('Logged out');
   });
 
-  // --- Navigation ---
+
   document.querySelectorAll('.nav-link').forEach((btn) => {
     btn.addEventListener('click', () => navigateTo(btn.dataset.view));
   });
@@ -128,7 +134,7 @@
     loaders[view]?.();
   }
 
-  // --- Dashboard ---
+
   async function loadDashboard() {
     document.getElementById('dashboardGreeting').textContent =
       `Hello, ${Auth.user.fullName}!`;
@@ -152,7 +158,7 @@
     }
   }
 
-  // --- Services ---
+
   async function loadServices() {
     try {
       const res = await API.getServices();
@@ -219,7 +225,7 @@
     }
   });
 
-  // --- Slots ---
+
   async function loadSlots() {
     try {
       const servicesRes = await API.getServices();
@@ -298,7 +304,7 @@
     }
   });
 
-  // --- Reservations ---
+
   async function loadReservations() {
     try {
       const res = await API.getMyReservations();
@@ -352,7 +358,7 @@
     }
   };
 
-  // --- Profile ---
+
   async function loadProfile() {
     try {
       const res = await API.getProfile();
@@ -368,7 +374,7 @@
     }
   }
 
-  // --- Admin ---
+
   async function loadAdmin() {
     if (!Auth.isAdmin()) return;
     try {
@@ -430,7 +436,7 @@
     return div.innerHTML;
   }
 
-  // --- Init ---
+
   Auth.load();
   if (Auth.isLoggedIn()) {
     updateNav();

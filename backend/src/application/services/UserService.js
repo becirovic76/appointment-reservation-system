@@ -1,4 +1,4 @@
-/** Application service for user management (admin) */
+
 class UserService {
   constructor(userRepository) {
     this.userRepository = userRepository;

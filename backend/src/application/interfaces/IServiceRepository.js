@@ -1,4 +1,4 @@
-/** Service repository contract */
+
 class IServiceRepository {
   findById() { throw new Error('Not implemented'); }
   findAll() { throw new Error('Not implemented'); }

@@ -1,4 +1,4 @@
-/** Appointment slot repository contract */
+
 class ISlotRepository {
   findById() { throw new Error('Not implemented'); }
   findAll() { throw new Error('Not implemented'); }

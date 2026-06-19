@@ -1,6 +1,6 @@
 const AppointmentSlot = require('../../domain/entities/AppointmentSlot');
 
-/** Application service for appointment slot management */
+
 class SlotService {
   constructor(slotRepository, serviceRepository) {
     this.slotRepository = slotRepository;
@@ -13,7 +13,7 @@ class SlotService {
 
   getAvailable() {
     const slots = this.slotRepository.findAvailable();
-    // Filter out past slots for users
+
     return slots.filter((s) => !AppointmentSlot.isPastSlot(s));
   }
 

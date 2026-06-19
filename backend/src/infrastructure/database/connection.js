@@ -1,7 +1,4 @@
-/**
- * SQLite database connection singleton.
- * Infrastructure layer - data access setup.
- */
+
 const Database = require('better-sqlite3');
 const fs = require('fs');
 const path = require('path');
@@ -25,7 +22,7 @@ function getDatabase() {
   return db;
 }
 
-/** Applies schema.sql on first run */
+
 function initializeSchema() {
   const schema = fs.readFileSync(SCHEMA_PATH, 'utf8');
   db.exec(schema);

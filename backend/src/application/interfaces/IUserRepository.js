@@ -1,7 +1,4 @@
-/**
- * User repository contract (Application layer).
- * Infrastructure implements this interface.
- */
+
 class IUserRepository {
   findById() { throw new Error('Not implemented'); }
   findByEmail() { throw new Error('Not implemented'); }

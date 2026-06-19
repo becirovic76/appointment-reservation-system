@@ -1,7 +1,4 @@
-/**
- * JWT authentication middleware.
- * Attaches decoded user to req.user.
- */
+
 const Role = require('../../domain/enums/Role');
 
 function createAuthMiddleware(authService) {

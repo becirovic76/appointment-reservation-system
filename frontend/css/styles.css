@@ -1,4 +1,4 @@
-/* Appointment Reservation System - Modern UI Styles */
+
 
 :root {
   --bg: #0f1419;
@@ -36,7 +36,10 @@ body {
     radial-gradient(ellipse 60% 40% at 100% 100%, rgba(99, 102, 241, 0.08), transparent);
 }
 
-/* Navbar */
+[hidden] {
+  display: none !important;
+}
+
 .navbar {
   display: flex;
   align-items: center;
@@ -99,7 +102,7 @@ body {
 
 .role-badge.user { background: var(--primary); }
 
-/* Main */
+
 .main-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -110,7 +113,7 @@ body {
 .page-header h1 { font-size: 1.75rem; font-weight: 700; }
 .page-header p { color: var(--text-muted); margin-top: 0.25rem; }
 
-/* Auth */
+
 .auth-view {
   display: flex;
   align-items: center;
@@ -141,7 +144,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Forms */
+
 .form-group { margin-bottom: 1rem; }
 .form-group label {
   display: block;
@@ -181,7 +184,7 @@ input:focus, select:focus {
   min-width: 140px;
 }
 
-/* Buttons */
+
 .btn {
   padding: 0.6rem 1.25rem;
   border: none;
@@ -202,7 +205,7 @@ input:focus, select:focus {
 .btn-sm { padding: 0.4rem 0.85rem; font-size: 0.8rem; }
 .btn-block { width: 100%; }
 
-/* Cards */
+
 .card {
   background: var(--bg-card);
   border: 1px solid var(--border);
@@ -251,7 +254,7 @@ input:focus, select:focus {
 
 .slot-card.unavailable { opacity: 0.5; }
 
-/* Stats */
+
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -270,7 +273,7 @@ input:focus, select:focus {
 .stat-card .value { font-size: 2rem; font-weight: 700; color: var(--primary); }
 .stat-card .label { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
 
-/* Tables */
+
 .table-wrap { overflow-x: auto; }
 table {
   width: 100%;
@@ -289,7 +292,7 @@ th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transfo
 .status-active { color: var(--success); font-weight: 600; }
 .status-cancelled { color: var(--text-muted); }
 
-/* Reservation list */
+
 .reservation-item {
   display: flex;
   justify-content: space-between;
@@ -304,7 +307,7 @@ th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transfo
 .reservation-item .info h4 { font-size: 0.95rem; }
 .reservation-item .info p { font-size: 0.85rem; color: var(--text-muted); }
 
-/* Profile */
+
 .profile-card .profile-row {
   display: flex;
   padding: 0.75rem 0;
@@ -314,7 +317,7 @@ th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transfo
 .profile-card .profile-row:last-child { border: none; }
 .profile-card .label { width: 120px; color: var(--text-muted); font-size: 0.9rem; }
 
-/* Filters */
+
 .filters {
   display: flex;
   gap: 1rem;
@@ -326,7 +329,7 @@ th { color: var(--text-muted); font-weight: 600; font-size: 0.8rem; text-transfo
 
 .quick-actions { display: flex; gap: 1rem; flex-wrap: wrap; }
 
-/* Alerts & Toast */
+
 .alert {
   padding: 0.75rem 1rem;
   border-radius: var(--radius-sm);

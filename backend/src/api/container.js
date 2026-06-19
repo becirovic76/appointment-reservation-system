@@ -1,7 +1,4 @@
-/**
- * Dependency Injection container.
- * Wires repositories, services, controllers (Clean Architecture composition root).
- */
+
 const UserRepository = require('../infrastructure/repositories/UserRepository');
 const ServiceRepository = require('../infrastructure/repositories/ServiceRepository');
 const SlotRepository = require('../infrastructure/repositories/SlotRepository');

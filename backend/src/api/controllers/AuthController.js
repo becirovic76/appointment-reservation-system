@@ -1,4 +1,4 @@
-/** Authentication API controller */
+
 class AuthController {
   constructor(authService) {
     this.authService = authService;
@@ -24,7 +24,7 @@ class AuthController {
   };
 
   logout = (req, res) => {
-    // JWT is stateless; client removes token on logout
+
     res.json({ success: true, message: 'Logged out successfully' });
   };
 

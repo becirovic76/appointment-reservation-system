@@ -1,7 +1,4 @@
-/**
- * Request validation rules using express-validator.
- * Covers required fields and email validation.
- */
+
 const { body, param, query, validationResult } = require('express-validator');
 
 const handleValidation = (req, res, next) => {
