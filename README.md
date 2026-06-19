@@ -199,7 +199,7 @@ docs/uml/
 
 ### Login Screen
 
-![Login](docs/screenshots/login.png)
+![Login](docs/screenshots/login.PNG)
 
 ### Services Screen
 
@@ -207,11 +207,11 @@ docs/uml/
 
 ### Reservations Screen
 
-![Reservations](docs/screenshots/reservations.png)
+![Reservations](docs/screenshots/reservations.PNG)
 
 ### Admin Panel
 
-![Admin Panel](docs/screenshots/admin-panel.png)
+![Admin Panel](docs/screenshots/admin-panel.PNG)
 
 ---
 
